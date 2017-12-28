@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <ConcatChar>
+    <string value="."/>
+  </ConcatChar>
+  <Tab>4</Tab>
+  <CompartChars><![CDATA[ .,(){}[]!&|<>=+-*/%;,:"'#]]></CompartChars>
+  <CompartCharFont Color="0,0,255" FontStyle="0">(){}[]</CompartCharFont>
+  <Couple BackGoundColor="255,184,140">
+    <Char Start="[" End="]"></Char>
+    <Char Start="{" End="}"></Char>
+    <Char Start="(" End=")"></Char>
+  </Couple>
+  <Range Start="{" End="}"></Range>
+  <StartEndWord>
+    <Value Color="128,128,128" Start="///" Line="true" />
+    <Value Color="0,128,0" Start="//" Line="true" />
+    <Value Color="0,128,10"  Start="/*" End="*/" More="true"/>
+    <Value Color="128,64,0" Start="##" FontStyle="8" Line="true" />
+    <Value Color="0,0,255" Start="#" Line="true" />
+    <Value Color="193,63,21" Start="&quot;" End="&quot;" Line="true" BeforeNoChar="\" />
+    <Value Color="193,63,21" Start="'" End="'" Line="true" BeforeNoChar="\" />
+  </StartEndWord>
+
+</root>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <ConcatChar>
+    <string value="."/>
+  </ConcatChar>
+  <Tab>4</Tab>
+  <CompartChars><![CDATA[ .,(){}[]!&|<>=+-*/%;,:"'#]]></CompartChars>
+  <CompartCharFont Color="0,0,255" FontStyle="0">(){}[]</CompartCharFont>
+  <Couple BackGoundColor="255,184,140">
+    <Char Start="[" End="]"></Char>
+    <Char Start="{" End="}"></Char>
+    <Char Start="(" End=")"></Char>
+  </Couple>
+  <Range Start="{" End="}"></Range>
+  <Word Color="0,0,255" FontStyle="0" >
+    <Value>using,namespace,enum,class,struct,interface,sealed,partial,new,this,delegate</Value>
+    <Value>abstract,virtual,override,unsafe,fixed,params,ref,out,event,extern,volatile,lock,get,set,add,remove</Value>
+    <Value>public,private,protected,internal,static,const,readonly,typeof</Value>
+    <Value>break,return,if,else,for,while,do,foreach,switch,case,default,yield,in,is,as,void</Value>
+    <Value>int,string,char,bool,long,float,decimal,double,var,sbyte,byte,short,uint,ushort,ulong,checked,unchecked,null,value,object</Value>
+    <Value>try,throw,catch,finally</Value>
+  </Word>
+  <Retraction>
+    <Value>public,private,protected,internal,void,if,for,foreach,while,switch,case,default,else,namespace,class,using</Value>
+    <BerforChar>{</BerforChar>
+    <AfterNoChar>}</AfterNoChar>
+  </Retraction>
+  <AutoInsert>
+    <Char name="{">}</Char>
+    <Char name="[">]</Char>
+    <Char name="(">)</Char>
+    <Char name="'">'</Char>
+    <Char name="&quot;">"</Char>
+  </AutoInsert>
+  <StartEndWord>
+    <Value Color="128,128,128" Start="///" Line="true" />
+    <Value Color="0,128,0" Start="//" Line="true" />
+    <Value Color="0,128,10"  Start="/*" End="*/" More="true"/>
+    <Value Color="128,64,0" Start="##" FontStyle="8" Line="true" />
+    <Value Color="0,0,255" Start="#" Line="true" />
+    <Value Color="193,63,21" Start="&quot;" End="&quot;" Line="true" BeforeNoChar="\" />
+    <Value Color="193,63,21"  Start="@&quot;" End="&quot;" />
+    <Value Color="193,63,21" Start="'" End="'" Line="true" BeforeNoChar="\" />
+  </StartEndWord>
+  <Use>
+    <Item BeforeName="class">
+      <Value Color="43,145,175" FontStyle="1"></Value>
+    </Item>
+    <Item BeforeName="enum">
+      <Value Color="43,145,175" FontStyle="1"></Value>
+    </Item>
+    <Item BeforeName="interface">
+      <Value Color="43,145,175" FontStyle="1"></Value>
+    </Item>
+    <Item BeforeName="new" >
+      <Value Color="43,145,175" FontStyle="0"></Value>
+    </Item>
+    <Item BeforeName=".">
+      <After Color="84,55,173" FontStyle="0">(</After>
+    </Item>
+    <Item AfterName="(">
+      <Value Color="133,127,255" FontStyle="1"></Value>
+    </Item>
+  </Use>
+
+</root>

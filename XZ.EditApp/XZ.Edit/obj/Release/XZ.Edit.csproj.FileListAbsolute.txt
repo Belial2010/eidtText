@@ -1,0 +1,10 @@
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\bin\Release\Res\CSharp.xml
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\bin\Release\Res\JavaScript.xml
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\bin\Release\Res\Json.xml
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\bin\Release\XZ.Edit.dll
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\bin\Release\XZ.Edit.pdb
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\obj\Release\XZ.Edit.csprojResolveAssemblyReference.cache
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\obj\Release\XZ.Edit.Forms.Resource.resources
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\obj\Release\XZ.Edit.csproj.GenerateResource.Cache
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\obj\Release\XZ.Edit.dll
+D:\项目\Net\NJEditBox\XZ.EditApp\XZ.Edit\obj\Release\XZ.Edit.pdb
