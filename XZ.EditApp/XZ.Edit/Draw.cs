@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -185,8 +185,7 @@ namespace XZ.Edit {
             int heightValue = count * FontContainer.FontHeight;
             //int whileI = 0;
             #endregion
-            //this.GetLeftNumWidth(g);
-            this.DranNumBg(g);
+            this.GetLeftNumWidth(g);
             this.DrawSelectLine(g);
             this.DrawFindDrawRects(i, count, g);
             this.DrawSelectBackGround(startValue, heightValue, g);
@@ -235,7 +234,7 @@ namespace XZ.Edit {
                 i++;
             }
             #endregion
-
+            this.DranNumBg(g);
             this.DrawPuckerIcon(g);
         }
 
@@ -522,6 +521,8 @@ namespace XZ.Edit {
             return pNumRowWidth;
         }
 
+
+
         /// <summary>
         /// 绘制右侧行背景
         /// </summary>
@@ -531,8 +532,11 @@ namespace XZ.Edit {
         /// <param name="g"></param>
         private void DranNumBg(Graphics g) {
             int width = this.GetLeftNumWidth(g);
-            if (_leftNumBackGroundColorBrush == null)
+            if (_leftNumBackGroundColorBrush == null) {
                 _leftNumBackGroundColorBrush = new SolidBrush(this.pParser.PIEdit.LeftNumBackGroundColor);
+                _leftNumColorBrush = new SolidBrush(this.pParser.PIEdit.LeftNumColor);
+            }
+
             g.FillRectangle(_leftNumBackGroundColorBrush, new Rectangle(0, 0,
             width,
             this.pParser.PIEdit.GetHeight));
@@ -542,8 +546,14 @@ namespace XZ.Edit {
 
             g.DrawLine(this._leftNumSeparatorColorPen, width, 0, width, this.pParser.PIEdit.GetHeight);
 
-            if (this._leftNumColorBrush == null)
-                _leftNumColorBrush = new SolidBrush(this.pParser.PIEdit.LeftNumColor);
+            var index = 0;
+            foreach (var startNum in pDrawNum) {
+                var showNum = startNum.ToString();
+                int leftX = (pAllNumWidth - showNum.Length) * pNumWidth;
+                g.DrawString(showNum, FontContainer.DefaultFont, this._leftNumColorBrush, new PointF(leftX, index * FontContainer.FontHeight));
+                index++;
+            }
+
 
         }
 
@@ -553,15 +563,26 @@ namespace XZ.Edit {
         /// <param name="ls"></param>
         /// <param name="startNum"></param>
         private void SetLineIndexYAndDrawNum(LineString ls, int index, ref int startNum, Graphics g) {
+
+
             startNum++;
             ls.IndexY = startNum;
+            pDrawNum.Add(startNum);
+            if (ls.IsFurl()) {
+                GetHidePuckerCount(ls.ID, ref startNum);
+            }
+        }
 
-            var showNum = startNum.ToString();
-            int leftX = (pAllNumWidth - showNum.Length) * pNumWidth;
-            g.DrawString(showNum, FontContainer.DefaultFont, this._leftNumColorBrush, new PointF(leftX, index * FontContainer.FontHeight));
+        private void GetHidePuckerCount(int id, ref int count) {
+            LineString[] outArray;
+            if (this.pParser.PPucker.PDictPuckerList.TryGetValue(id, out outArray)) {
+                count += outArray.Length;
+                foreach (var l in outArray) {
+                    if (l.IsFurl())
+                        GetHidePuckerCount(l.ID, ref count);
 
-            if (ls.IsFurl())
-                startNum += this.pParser.PPucker.PDictPuckerList[ls.ID].Length;
+                }
+            }
         }
 
         #endregion
