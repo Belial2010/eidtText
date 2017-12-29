@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -46,6 +46,8 @@ namespace XZ.Edit {
         public Dictionary<int, LineString[]> PDictPuckerList = new Dictionary<int, LineString[]>();
 
         public Dictionary<int, Tuple<string, Word[]>> PDictPuckerLeavings = new Dictionary<int, Tuple<string, Word[]>>();
+
+        public Dictionary<int, CoupleProperty> PCoupleProperty = new Dictionary<int, CoupleProperty>();
 
         /// <summary>
         /// 获取下一个节点
@@ -161,12 +163,15 @@ namespace XZ.Edit {
                 length = y;
                 lastY = y;
             } else {
-                foreach (var pm in this.PuckerMarker) {
+                for (var i = 0; i < this.PuckerMarker.Count; i++) {
+                    var pm = this.PuckerMarker[i];
                     if (pm.IsFurl)
                         continue;
                     if (pm.ID == ls.ID) {
                         findLs = true;
                         length = pm.IndexY;
+                        if (i == this.PuckerMarker.Count - 1)
+                            lastY = y;
                         continue;
                     }
                     if (findLs) {
@@ -386,10 +391,6 @@ namespace XZ.Edit {
             this.pParser.PLineString.RemoveRange(y + 1, copyArray.Length);
             this.PDictPuckerList[id] = copyArray;
 
-            //var copyArrayForNums = new int[length];
-            //this.pParser.PLineNum.CopyTo(y + 1, copyArrayForNums, 0, copyArrayForNums.Length);
-            //this.pParser.PLineNum.RemoveRange(y + 1, copyArrayForNums.Length);
-            //this.PDictPuckerNum[id] = copyArrayForNums;
         }
 
         /// <summary>
@@ -397,6 +398,7 @@ namespace XZ.Edit {
         /// </summary>
         /// <param name="ls"></param>
         public void RmovePuckerLeavings(LineString ls) {
+            HideCoupe(ls);
             var array = new Word[ls.PWord.Count - ls.PLNProperty.IndexForLineWords];
             ls.PWord.CopyTo(ls.PLNProperty.IndexForLineWords, array, 0, array.Length);
             ls.PWord.RemoveRange(ls.PLNProperty.IndexForLineWords, array.Length);
@@ -408,7 +410,31 @@ namespace XZ.Edit {
             PDictPuckerLeavings[ls.ID] = Tuple.Create(text, array);
         }
 
-        public void RmovePuckerLeavingOnly(LineString ls) {
+        private void HideCoupe(LineString ls) {
+            var index = ls.PLNProperty.IndexForLineString;
+            CoupleProperty outCP;
+            if (ls.PLNProperty.Couple.TryGetValue(index, out outCP)) {
+                ls.PLNProperty.Couple.Remove(index);
+                if (outCP.UpNode != null)
+                    outCP.UpNode.NextNode = null;
+
+                //return outCP;
+                PCoupleProperty[ls.ID] = outCP;
+            }
+            //return null;
+        }
+
+        private void ShowCoupe(LineString ls) {
+            CoupleProperty outCP;
+            if (PCoupleProperty.TryGetValue(ls.ID, out outCP)) {
+                ls.PLNProperty.Couple[ls.PLNProperty.IndexForLineString] = outCP;
+                if (outCP.UpNode != null)
+                    outCP.UpNode.NextNode = outCP;
+                PCoupleProperty.Remove(ls.ID);
+            }
+        }
+
+        public void RmovePuckerLeavingOnly(LineString ls) {           
             int length = ls.PWord.Count - ls.PLNProperty.IndexForLineWords;
             ls.Text = ls.Text.Remove(ls.PLNProperty.IndexForLineString);
             ls.PWord.RemoveRange(ls.PLNProperty.IndexForLineWords, length);
@@ -419,6 +445,7 @@ namespace XZ.Edit {
         /// </summary>
         /// <param name="ls"></param>
         private void AddPuckerLeavings(LineString ls) {
+            ShowCoupe(ls);
             if (ls.IsCommentPucker) {
                 PDictPuckerLeavings.Remove(ls.ID);
                 return;
@@ -444,11 +471,6 @@ namespace XZ.Edit {
                 this.pParser.PLineString.InsertRange(y + 1, lines);
                 PDictPuckerList.Remove(id);
             }
-            //int[] nums;
-            //if (PDictPuckerNum.TryGetValue(id, out nums)) {
-            //    this.pParser.PLineNum.InsertRange(y + 1, nums);
-            //    PDictPuckerNum.Remove(id);
-            //}
         }
 
         /// <summary>
@@ -469,8 +491,6 @@ namespace XZ.Edit {
                     rect.Y = y * FontContainer.FontHeight - this.pIEdit.GetVerticalScrollValue;
                     rect.Width = this.pParser.GetHidePartWidth;
                     rect.Height = FontContainer.FontHeight;
-                    //showPoint.X = Control.MousePosition.X;
-                    //showPoint.Y = Control.MousePosition.Y + FontContainer.FontHeight;
                     return this.PDictPuckerList[ls.ID];
                 }
             }
